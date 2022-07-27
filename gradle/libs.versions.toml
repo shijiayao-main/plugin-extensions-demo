@@ -17,13 +17,17 @@ versionCheck = { id = "com.github.ben-manes.versions", version.ref = "versionChe
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "gradlePluginVersion" }
 androidApplication = { id = "com.android.application", version.ref = "gradlePluginVersion" }
-# booster
-booster = { id = "com.didiglobal.booster", version.ref = "boosterVersion" }
 
 [libraries]
 junit = "junit:junit:4.13.2"
 # booster
 boosterGradlePlugin = { module = "com.didiglobal.booster:booster-gradle-plugin", version.ref = "boosterVersion" }
-boosterTaskAll = { module = "com.didiglobal.booster:booster-task-all", version.ref = "boosterVersion" }
-boosterTransformAll = { module = "com.didiglobal.booster:booster-transform-all", version.ref = "boosterVersion" }
+boosterApi = { module = "com.didiglobal.booster:booster-api", version.ref = "boosterVersion" }
+boosterTransformAsm = {  module = "com.didiglobal.booster:booster-transform-asm", version.ref = "boosterVersion" }
+# kotlin
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin"}
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin"}
+# android
+androidBuildTools = { module = "com.android.tools.build:gradle", version.ref = "gradlePluginVersion" }
+googleAutoService = "com.google.auto.service:auto-service:1.0.1"

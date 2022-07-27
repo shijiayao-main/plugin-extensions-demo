@@ -14,4 +14,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "plugin-extensions"
 include(":app")
-includeBuild("plugins")
+
+includeBuild("plugins") {
+    dependencySubstitution {
+        substitute(module("com.jiaoay.plugins:sdk-patcher")).using(project(":sdk-patcher"))
+        substitute(module("com.jiaoay.plugins:sdk-patcher-extensions")).using(project(":sdk-patcher-extensions"))
+    }
+}

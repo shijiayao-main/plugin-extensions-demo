@@ -18,6 +18,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "com.jiaoay.plugin-extensions"
+rootProject.name = "plugins"
 
 include(":core")
+include(":sdk-patcher")
+include(":sdk-patcher-extensions")

@@ -1,0 +1,29 @@
+[versions]
+detekt = "1.20.0"
+kotlin = "1.7.10"
+ktlintGradle = "10.3.0"
+pluginPublish = "1.0.0"
+versionCheck = "0.42.0"
+boosterVersion = "4.12.0"
+gradlePluginVersion = "7.4.0-alpha08"
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
+pluginPublish = { id = "com.gradle.plugin-publish", version.ref = "pluginPublish" }
+versionCheck = { id = "com.github.ben-manes.versions", version.ref = "versionCheck" }
+# android
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidLibrary = { id = "com.android.library", version.ref = "gradlePluginVersion" }
+androidApplication = { id = "com.android.application", version.ref = "gradlePluginVersion" }
+# booster
+booster = { id = "com.didiglobal.booster", version.ref = "boosterVersion" }
+
+[libraries]
+junit = "junit:junit:4.13.2"
+# booster
+boosterGradlePlugin = { module = "com.didiglobal.booster:booster-gradle-plugin", version.ref = "boosterVersion" }
+boosterTaskAll = { module = "com.didiglobal.booster:booster-task-all", version.ref = "boosterVersion" }
+boosterTransformAll = { module = "com.didiglobal.booster:booster-transform-all", version.ref = "boosterVersion" }
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

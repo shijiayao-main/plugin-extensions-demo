@@ -10,8 +10,14 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
 
-rootProject.name = "plugin-extensions"
-include(":app")
-includeBuild("plugins")
+rootProject.name = "com.jiaoay.plugin-extensions"
+
+include(":core")

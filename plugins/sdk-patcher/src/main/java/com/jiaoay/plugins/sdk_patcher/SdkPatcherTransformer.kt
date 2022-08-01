@@ -1,7 +1,7 @@
 package com.jiaoay.plugins.sdk_patcher
 
 import com.didiglobal.booster.transform.TransformContext
-import com.didiglobal.booster.transform.asm.ClassTransformer
+import com.jiaoay.plugins.core.asm.ClassTransformer
 import com.google.auto.service.AutoService
 import org.objectweb.asm.tree.ClassNode
 

@@ -14,10 +14,14 @@ dependencies {
     api(gradleApi())
     api(kotlin("stdlib"))
     api(libs.kotlinReflect)
-    api(group = "com.android.tools.build", name = "gradle", version = "7.2.1")
     kapt(libs.googleAutoService)
     api(libs.boosterApi)
-    api(libs.boosterTransformAsm)
+    api(libs.asm)
+    api(libs.asmAnalysis)
+    api(libs.asmCommons)
+    api(libs.asmTree)
+    api(libs.asmUtil)
+    compileOnly("com.android.tools.build:gradle:4.0.0")
 //    api(libs.androidBuildTools)
 }
 

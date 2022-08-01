@@ -6,6 +6,7 @@ pluginPublish = "1.0.0"
 versionCheck = "0.42.0"
 boosterVersion = "4.12.0"
 gradlePluginVersion = "7.2.1"
+asmVersion = "9.3"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
@@ -33,3 +34,9 @@ kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = 
 # android
 androidBuildTools = { module = "com.android.tools.build:gradle", version.ref = "gradlePluginVersion" }
 googleAutoService = "com.google.auto.service:auto-service:1.0.1"
+# asm
+asm = { module = "org.ow2.asm:asm", version.ref = "asmVersion"}
+asmAnalysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asmVersion"}
+asmCommons = { module = "org.ow2.asm:asm-commons", version.ref = "asmVersion"}
+asmTree = { module = "org.ow2.asm:asm-tree", version.ref = "asmVersion"}
+asmUtil = { module = "org.ow2.asm:asm-util", version.ref = "asmVersion"}

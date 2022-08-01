@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     `java-gradle-plugin`
+    `kotlin-dsl`
 }
 
 java {
@@ -18,4 +19,13 @@ dependencies {
     api(libs.boosterApi)
     api(libs.boosterTransformAsm)
 //    api(libs.androidBuildTools)
+}
+
+gradlePlugin {
+    plugins {
+        create("extensions") {
+            id = "com.jiaoay.plugins"
+            implementationClass = "com.jiaoay.plugins.core.ExtensionsPlugin"
+        }
+    }
 }

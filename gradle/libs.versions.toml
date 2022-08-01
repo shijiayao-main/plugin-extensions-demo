@@ -5,7 +5,7 @@ ktlintGradle = "10.3.0"
 pluginPublish = "1.0.0"
 versionCheck = "0.42.0"
 boosterVersion = "4.12.0"
-gradlePluginVersion = "7.4.0-alpha08"
+gradlePluginVersion = "7.2.1"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
@@ -23,11 +23,13 @@ junit = "junit:junit:4.13.2"
 # booster
 boosterGradlePlugin = { module = "com.didiglobal.booster:booster-gradle-plugin", version.ref = "boosterVersion" }
 boosterApi = { module = "com.didiglobal.booster:booster-api", version.ref = "boosterVersion" }
-boosterTransformAsm = {  module = "com.didiglobal.booster:booster-transform-asm", version.ref = "boosterVersion" }
+boosterTaskAnalyser = { module = "com.didiglobal.booster:booster-task-analyser", version.ref = "boosterVersion" }
+boosterTransformAsm = { module = "com.didiglobal.booster:booster-transform-asm", version.ref = "boosterVersion" }
+boosterTransformActivityThread = { module = "com.didiglobal.booster:booster-transform-activity-thread", version.ref = "boosterVersion" }
 # kotlin
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin"}
-kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin"}
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 # android
 androidBuildTools = { module = "com.android.tools.build:gradle", version.ref = "gradlePluginVersion" }
 googleAutoService = "com.google.auto.service:auto-service:1.0.1"

@@ -15,6 +15,6 @@ class SdkPatcherTransformer : ClassTransformer {
     override fun transform(context: TransformContext, klass: ClassNode): ClassNode {
         println("$TAG transform, klass: ${klass.name}")
         throw RuntimeException()
-        return super.transform(context, klass)
+//        return super.transform(context, klass)
     }
 }

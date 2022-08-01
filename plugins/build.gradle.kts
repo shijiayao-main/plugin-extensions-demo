@@ -2,6 +2,7 @@ buildscript {
     dependencies {
         classpath(libs.kotlinGradlePlugin)
         classpath(kotlin("gradle-plugin", version = libs.versions.kotlin.get()))
+        classpath(libs.boosterGradlePlugin)
     }
 }
 

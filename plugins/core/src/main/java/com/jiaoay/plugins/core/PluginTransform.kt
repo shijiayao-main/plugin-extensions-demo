@@ -58,7 +58,7 @@ open class PluginTransform protected constructor(
 
     companion object {
 
-        fun newInstance(project: Project, name: String = "booster"): PluginTransform {
+        fun newInstance(project: Project, name: String = "plugin-extensions"): PluginTransform {
             val parameter = project.newTransformParameter(name)
             return when {
                 GTE_V3_4 -> BoosterTransformV34(parameter)

@@ -2,10 +2,10 @@ package com.jiaoay.plugins.core.asm
 
 import com.didiglobal.booster.annotations.Priority
 import com.didiglobal.booster.kotlinx.touch
-import com.didiglobal.booster.transform.TransformContext
-import com.didiglobal.booster.transform.Transformer
-import com.didiglobal.booster.transform.util.diff
 import com.google.auto.service.AutoService
+import com.jiaoay.plugins.core.transform.TransformContext
+import com.jiaoay.plugins.core.transform.Transformer
+import com.jiaoay.plugins.core.util.diff
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.tree.ClassNode
@@ -81,7 +81,7 @@ class AsmTransformer : Transformer {
 
         val w1 = this.durations.keys.map {
             it.javaClass.name.length
-        }.max() ?: 20
+        }.maxOrNull() ?: 20
         this.durations.forEach { (transformer, ns) ->
             println("${transformer.javaClass.name.padEnd(w1 + 1)}: ${ns.toMillis()} ms")
         }

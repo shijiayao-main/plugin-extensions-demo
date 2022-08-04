@@ -14,8 +14,17 @@ dependencies {
     api(gradleApi())
     api(kotlin("stdlib"))
     api(libs.kotlinReflect)
-    kapt(libs.googleAutoService)
-    api(libs.boosterApi)
+//    kapt(libs.googleAutoService)
+    api(libs.googleAutoService)
+
+    api(libs.boosterAndroidGradleApi)
+//    api(libs.boosterTransformSpi)
+//    api(libs.boosterTransformUtil)
+
+    api (libs.boosterBuild)
+    api("org.apache.commons:commons-compress:1.21")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r")
+
     api(libs.asm)
     api(libs.asmAnalysis)
     api(libs.asmCommons)

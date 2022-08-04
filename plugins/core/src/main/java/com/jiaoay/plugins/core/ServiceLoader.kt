@@ -1,7 +1,7 @@
 package com.jiaoay.plugins.core
 
-import com.didiglobal.booster.task.spi.VariantProcessor
-import com.didiglobal.booster.transform.Transformer
+import com.jiaoay.plugins.core.task.spi.VariantProcessor
+import com.jiaoay.plugins.core.transform.Transformer
 import org.gradle.api.Project
 import java.net.URL
 import java.nio.charset.StandardCharsets

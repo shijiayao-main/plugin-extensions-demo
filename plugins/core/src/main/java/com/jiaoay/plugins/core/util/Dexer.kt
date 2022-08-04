@@ -1,4 +1,4 @@
-package com.didiglobal.booster.gradle.util
+package com.jiaoay.plugins.core.util
 
 import com.android.dex.DexFormat
 import com.android.dx.command.dexer.Main

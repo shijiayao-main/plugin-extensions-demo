@@ -17,7 +17,7 @@ import java.time.Duration
 import java.util.*
 import java.util.jar.JarFile
 
-@AutoService(Transformer::class)
+//@AutoService(Transformer::class)
 class AsmTransformer : Transformer {
 
     private val threadMxBean = ManagementFactory.getThreadMXBean()

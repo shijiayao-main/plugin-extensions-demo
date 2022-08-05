@@ -22,3 +22,4 @@ includeBuild("plugins") {
         substitute(module("com.jiaoay.plugins:sdk-patcher-extensions")).using(project(":sdk-patcher-extensions"))
     }
 }
+enableFeaturePreview("VERSION_CATALOGS")

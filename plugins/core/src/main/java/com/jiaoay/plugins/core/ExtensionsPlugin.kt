@@ -10,6 +10,7 @@ import com.jiaoay.plugins.core.task.spi.VariantProcessor
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.reflect.TypeOf
 
 class ExtensionsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -23,7 +24,7 @@ class ExtensionsPlugin : Plugin<Project> {
             )
         }
 
-        // 获取添加了AutoService注解的类
+//         AutoService
         val processors = loadVariantProcessors(project)
         if (project.state.executed) {
             project.setup(processors)
@@ -36,12 +37,13 @@ class ExtensionsPlugin : Plugin<Project> {
 
     private fun Project.setup(processors: List<VariantProcessor>) {
         val android = project.getAndroid<BaseExtension>()
+        val extensions: AppExtension? = project.extensions.findByType(TypeOf.typeOf(AppExtension::class.java))
         when (android) {
             is AppExtension -> android.applicationVariants
             is LibraryExtension -> android.libraryVariants
             else -> emptyList<BaseVariant>()
         }.takeIf<Collection<BaseVariant>>(Collection<BaseVariant>::isNotEmpty)?.let { variants ->
-            android.registerTransform(PluginTransform.newInstance(project))
+            extensions?.registerTransform(PluginTransform.newInstance(project))
             variants.forEach { variant ->
                 processors.forEach { processor ->
                     processor.process(variant)

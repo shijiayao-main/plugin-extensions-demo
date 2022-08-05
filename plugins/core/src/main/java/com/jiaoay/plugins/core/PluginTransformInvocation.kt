@@ -8,7 +8,7 @@ import com.android.build.api.transform.Status.NOTCHANGED
 import com.android.build.api.transform.Status.REMOVED
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.BaseExtension
-import com.android.dex.DexFormat
+//import com.android.dex.DexFormat
 import com.didiglobal.booster.gradle.ResolvedArtifactResults
 import com.didiglobal.booster.gradle.applicationId
 import com.didiglobal.booster.gradle.bootClasspath
@@ -251,7 +251,8 @@ internal class PluginTransformInvocation(
     private fun doVerify() {
         outputs.sortedBy(File::nameWithoutExtension).forEach { input ->
             val output = temporaryDir.file(input.name)
-            val rc = input.dex(output, variant.extension.defaultConfig.targetSdkVersion?.apiLevel ?: DexFormat.API_NO_EXTENDED_OPCODES)
+//            DexFormat.API_NO_EXTENDED_OPCODES = 13
+            val rc = input.dex(output, variant.extension.defaultConfig.targetSdkVersion?.apiLevel ?: 13)
             println("${if (rc != 0) red("✗") else green("✓")} $input")
             output.deleteRecursively()
         }

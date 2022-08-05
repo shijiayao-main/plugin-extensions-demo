@@ -23,3 +23,4 @@ rootProject.name = "plugins"
 include(":core")
 include(":sdk-patcher")
 include(":sdk-patcher-extensions")
+enableFeaturePreview("VERSION_CATALOGS")

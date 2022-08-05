@@ -2,7 +2,8 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     `java-gradle-plugin`
-    `kotlin-dsl`
+    base
+//    `kotlin-dsl`
 }
 
 java {
@@ -16,6 +17,7 @@ dependencies {
     api(libs.kotlinReflect)
 //    kapt(libs.googleAutoService)
     api(libs.googleAutoService)
+    annotationProcessor(libs.googleAutoService)
 
     api(libs.boosterAndroidGradleApi)
 //    api(libs.boosterTransformSpi)
@@ -30,8 +32,8 @@ dependencies {
     api(libs.asmCommons)
     api(libs.asmTree)
     api(libs.asmUtil)
-    compileOnly("com.android.tools.build:gradle:4.0.0")
-//    api(libs.androidBuildTools)
+//    compileOnly("com.android.tools.build:gradle:4.0.0")
+    compileOnly(libs.androidBuildTools)
 }
 
 gradlePlugin {

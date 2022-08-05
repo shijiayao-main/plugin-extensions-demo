@@ -1,10 +1,10 @@
 ## "core"这个里面都是什么？
-就是照搬的booster-gradle-plugin，不过把部分的类名给改了下。
-为啥要改呢。。说实话我也不知道，就是想着怎么也得改点东西。。。
-反正这部分一行都不要看，想看的话就直接去看[booster](https://github.com/didi/booster) 的，
-主要原因是用了composite build，但是不知道是姿势不对还是什么其他原因
+由于遇到了各种奇怪的问题，为了不耽误时间就把booster给挪过来了
+core目录下就是照搬的booster-gradle-plugin。
+这部分不用看，想了解的话就直接去看[booster](https://github.com/didi/booster) 的，
+主要原因是用了composite build，但是感觉姿势不对，来来回回都有问题
 按照[booster开发指南](https://booster.johnsonlee.io/zh/) 添加后transform一直不能运行
-感觉有点耽误时间就直接搬过来了，之后有空了再看看怎么抢救一下
+之后有空了再看看怎么抢救一下
 
 ## 👆🏻都需要抢救了为什么还要用composite build？
 感觉这么写能使我心情舒畅，buildSrc那种是写起来方便，但是吧。。。主要是感觉不爽
@@ -17,7 +17,7 @@
 有好东西为啥不用呢
 
 ## 有没有考虑写个文章介绍下asm这块吗？
-没有。。文笔不好。。说不清话。。尽量把代码写清楚些。。建议直接看代码。。。。
+没有。。社恐。。说不清话。。尽量把代码写清楚些。。建议直接看代码。。。。
 emmmmm，不看代码总不能只看README吧。。哈哈
 
 ## 👆上面这些真的是有人提问的吗？

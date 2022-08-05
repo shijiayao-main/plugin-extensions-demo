@@ -8,7 +8,7 @@ import com.didiglobal.booster.gradle.GTE_V3_4
 import com.didiglobal.booster.gradle.SCOPE_FULL_PROJECT
 import com.didiglobal.booster.gradle.SCOPE_FULL_WITH_FEATURES
 import com.didiglobal.booster.gradle.SCOPE_PROJECT
-import com.jiaoay.plugins.core.internal.BoosterTransformV34
+import com.jiaoay.plugins.core.internal.PluginTransformV34
 import org.gradle.api.Project
 
 open class PluginTransform protected constructor(
@@ -46,6 +46,7 @@ open class PluginTransform protected constructor(
     }
 
     final override fun transform(invocation: TransformInvocation) {
+        throw RuntimeException("a")
         PluginTransformInvocation(invocation, this).apply {
             if (isIncremental) {
                 doIncrementalTransform()
@@ -61,7 +62,7 @@ open class PluginTransform protected constructor(
         fun newInstance(project: Project, name: String = "plugin-extensions"): PluginTransform {
             val parameter = project.newTransformParameter(name)
             return when {
-                GTE_V3_4 -> BoosterTransformV34(parameter)
+                GTE_V3_4 -> PluginTransformV34(parameter)
                 else -> PluginTransform(parameter)
             }
         }

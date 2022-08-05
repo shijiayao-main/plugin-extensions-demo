@@ -16,8 +16,8 @@ dependencies {
     api(kotlin("stdlib"))
     api(libs.kotlinReflect)
 //    kapt(libs.googleAutoService)
-    api(libs.googleAutoService)
-    annotationProcessor(libs.googleAutoService)
+    implementation(libs.googleAutoService)
+//    annotationProcessor(libs.googleAutoService)
 
     api(libs.boosterAndroidGradleApi)
 //    api(libs.boosterTransformSpi)

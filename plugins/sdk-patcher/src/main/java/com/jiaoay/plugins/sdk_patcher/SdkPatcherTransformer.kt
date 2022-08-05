@@ -1,12 +1,9 @@
 package com.jiaoay.plugins.sdk_patcher
 
-import com.google.auto.service.AutoService
 import com.jiaoay.plugins.core.asm.ClassTransformer
 import com.jiaoay.plugins.core.transform.TransformContext
 import org.objectweb.asm.tree.ClassNode
 
-// TODO:
-@AutoService(ClassTransformer::class)
 class SdkPatcherTransformer : ClassTransformer {
 
     companion object {
@@ -15,7 +12,6 @@ class SdkPatcherTransformer : ClassTransformer {
 
     override fun transform(context: TransformContext, klass: ClassNode): ClassNode {
         println("$TAG transform, klass: ${klass.name}")
-        throw RuntimeException()
-//        return super.transform(context, klass)
+        return super.transform(context, klass)
     }
 }

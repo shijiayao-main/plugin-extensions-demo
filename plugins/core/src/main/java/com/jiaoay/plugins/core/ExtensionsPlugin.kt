@@ -24,6 +24,17 @@ class ExtensionsPlugin : Plugin<Project> {
             )
         }
 
+        val appPlugin = project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.dynamic-feature")
+        val libPlugin = project.plugins.hasPlugin("com.android.library")
+
+        if (appPlugin) {
+            val extensions: AppExtension? = project.extensions.findByType(TypeOf.typeOf(AppExtension::class.java))
+            extensions?.registerTransform(PluginTransform.newInstance(project))
+        } else if (libPlugin) {
+            val extensions: LibraryExtension? = project.extensions.findByType(TypeOf.typeOf(LibraryExtension::class.java))
+            extensions?.registerTransform(PluginTransform.newInstance(project))
+        }
+
 //         AutoService
         val processors = loadVariantProcessors(project)
         if (project.state.executed) {
@@ -37,13 +48,11 @@ class ExtensionsPlugin : Plugin<Project> {
 
     private fun Project.setup(processors: List<VariantProcessor>) {
         val android = project.getAndroid<BaseExtension>()
-        val extensions: AppExtension? = project.extensions.findByType(TypeOf.typeOf(AppExtension::class.java))
         when (android) {
             is AppExtension -> android.applicationVariants
             is LibraryExtension -> android.libraryVariants
             else -> emptyList<BaseVariant>()
         }.takeIf<Collection<BaseVariant>>(Collection<BaseVariant>::isNotEmpty)?.let { variants ->
-            extensions?.registerTransform(PluginTransform.newInstance(project))
             variants.forEach { variant ->
                 processors.forEach { processor ->
                     processor.process(variant)

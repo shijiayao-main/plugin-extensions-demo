@@ -46,7 +46,6 @@ open class PluginTransform protected constructor(
     }
 
     final override fun transform(invocation: TransformInvocation) {
-        throw RuntimeException("a")
         PluginTransformInvocation(invocation, this).apply {
             if (isIncremental) {
                 doIncrementalTransform()

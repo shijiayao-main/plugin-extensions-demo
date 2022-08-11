@@ -13,7 +13,9 @@ import org.gradle.api.Project
 import org.gradle.api.reflect.TypeOf
 
 class ExtensionsPlugin : Plugin<Project> {
+
     override fun apply(project: Project) {
+
         project.extensions.findByName("android") ?: throw GradleException("$project is not an Android project")
 
         if (!GTE_V3_6) {
@@ -26,7 +28,6 @@ class ExtensionsPlugin : Plugin<Project> {
 
 //        Config
         project.loadConfig()
-
 
         val appPlugin = project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.dynamic-feature")
         val libPlugin = project.plugins.hasPlugin("com.android.library")

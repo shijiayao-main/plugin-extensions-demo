@@ -2,7 +2,8 @@
 buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", version = libs.versions.kotlin.get()))
-        classpath("com.jiaoay.plugins:sdk-patcher")
+        classpath("com.jiaoay.plugins:core")
+        classpath("com.jiaoay.plugins:plugin-demo")
     }
 }
 

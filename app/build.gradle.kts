@@ -35,8 +35,9 @@ android {
     }
 }
 
-sdkPatcher {
-    isEnable = false
+pluginDemo {
+    isEnable = true
+    tag = "这是一个Demo"
 }
 
 dependencies {

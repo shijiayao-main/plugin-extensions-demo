@@ -21,6 +21,6 @@ dependencyResolutionManagement {
 rootProject.name = "plugins"
 
 include(":core")
-include(":sdk-patcher")
-include(":sdk-patcher-extensions")
+include(":plugin-demo")
+include(":core-extensions")
 enableFeaturePreview("VERSION_CATALOGS")

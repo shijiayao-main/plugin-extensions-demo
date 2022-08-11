@@ -11,8 +11,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":sdk-patcher-extensions"))
+    compileOnly(project(":core"))
 
     compileOnly(libs.androidBuildTools)
 }

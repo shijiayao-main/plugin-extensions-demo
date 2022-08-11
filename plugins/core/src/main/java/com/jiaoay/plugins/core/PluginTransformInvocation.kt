@@ -1,5 +1,6 @@
 package com.jiaoay.plugins.core
 
+//import com.android.dex.DexFormat
 import com.android.build.api.transform.DirectoryInput
 import com.android.build.api.transform.Format
 import com.android.build.api.transform.JarInput
@@ -8,7 +9,6 @@ import com.android.build.api.transform.Status.NOTCHANGED
 import com.android.build.api.transform.Status.REMOVED
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.BaseExtension
-//import com.android.dex.DexFormat
 import com.didiglobal.booster.gradle.ResolvedArtifactResults
 import com.didiglobal.booster.gradle.applicationId
 import com.didiglobal.booster.gradle.bootClasspath
@@ -20,7 +20,6 @@ import com.didiglobal.booster.gradle.isDataBindingEnabled
 import com.didiglobal.booster.gradle.originalApplicationId
 import com.didiglobal.booster.gradle.project
 import com.didiglobal.booster.gradle.runtimeClasspath
-import com.jiaoay.plugins.core.util.dex
 import com.didiglobal.booster.gradle.variant
 import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.kotlinx.file
@@ -34,8 +33,10 @@ import com.jiaoay.plugins.core.transform.Transformer
 import com.jiaoay.plugins.core.transform.artifacts
 import com.jiaoay.plugins.core.util.CompositeCollector
 import com.jiaoay.plugins.core.util.collect
+import com.jiaoay.plugins.core.util.dex
 import com.jiaoay.plugins.core.util.transform
 import org.apache.commons.codec.digest.DigestUtils.md5Hex
+import org.gradle.api.logging.LogLevel
 import java.io.File
 import java.net.URI
 import java.util.concurrent.Callable
@@ -47,7 +48,7 @@ import java.util.concurrent.TimeUnit
 
 internal class PluginTransformInvocation(
     private val delegate: TransformInvocation,
-    private val transform: PluginTransform
+    private val transform: ExtensionsPluginTransform
 ) : TransformInvocation by delegate, TransformContext, ArtifactManager {
 
     private val outputs = CopyOnWriteArrayList<File>()
@@ -184,13 +185,25 @@ internal class PluginTransformInvocation(
         }
     }
 
-    private fun transformFully(executor: ExecutorService, @Suppress("UNUSED_PARAMETER") outOfDate: Set<File>) = this.inputs.map {
+    private fun transformFully(
+        executor: ExecutorService,
+        @Suppress("UNUSED_PARAMETER")
+        outOfDate: Set<File>
+    ) = this.inputs.map {
         it.jarInputs + it.directoryInputs
     }.flatten().map { input ->
         executor.submit {
-            val format = if (input is DirectoryInput) Format.DIRECTORY else Format.JAR
+            val format = if (input is DirectoryInput) {
+                Format.DIRECTORY
+            } else {
+                Format.JAR
+            }
             outputProvider?.let { provider ->
-                input.transform(provider.getContentLocation(input.id, input.contentTypes, input.scopes, format))
+                input.transform(
+                    provider.getContentLocation(
+                        input.id, input.contentTypes, input.scopes, format
+                    )
+                )
             }
         }
     }
@@ -253,7 +266,7 @@ internal class PluginTransformInvocation(
             val output = temporaryDir.file(input.name)
 //            DexFormat.API_NO_EXTENDED_OPCODES = 13
             val rc = input.dex(output, variant.extension.defaultConfig.targetSdkVersion?.apiLevel ?: 13)
-            println("${if (rc != 0) red("✗") else green("✓")} $input")
+            logger("${if (rc != 0) red("✗") else green("✓")} $input")
             output.deleteRecursively()
         }
     }
@@ -275,5 +288,9 @@ internal class PluginTransformInvocation(
         return transformers.fold(this) { bytes, transformer ->
             transformer.transform(this@PluginTransformInvocation, bytes)
         }
+    }
+
+    private fun logger(message: String) {
+        logger(level = LogLevel.ERROR, message = message)
     }
 }

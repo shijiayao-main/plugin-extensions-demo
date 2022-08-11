@@ -4,6 +4,7 @@ import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.kotlinx.redirect
 import com.didiglobal.booster.kotlinx.search
 import com.didiglobal.booster.kotlinx.touch
+import com.jiaoay.plugins.core.logger
 import org.apache.commons.compress.archivers.jar.JarArchiveEntry
 import org.apache.commons.compress.archivers.zip.ParallelScatterZipCreator
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
@@ -14,6 +15,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.RejectedExecutionHandler
@@ -34,15 +36,39 @@ fun File.transform(output: File, transformer: (ByteArray) -> ByteArray = { it ->
     when {
         isDirectory -> this.toURI().let { base ->
             this.search().parallelStream().forEach {
-                it.transform(File(output, base.relativize(it.toURI()).path), transformer)
+                it.transform(
+                    File(
+                        output, base.relativize(it.toURI()).path
+                    ),
+                    transformer
+                )
             }
         }
-        isFile -> when (extension.toLowerCase()) {
-            "jar" -> JarFile(this).use {
-                it.transform(output, ::JarArchiveEntry, transformer)
+        isFile -> when (extension.lowercase(Locale.getDefault())) {
+            // TODO: 这里去移除掉指定的class从而实现替换, class的不用这么改，只处理改不了的就好
+            "jar" -> {
+                val jarName = this.name
+                JarFile(this).use {
+                    if (isTargetJar(jarName)) {
+                        logger("targetJar: name: $jarName")
+                        it.transformTargetJar(
+                            output = output,
+                            entryFactory = ::JarArchiveEntry,
+                            transformer = transformer
+                        )
+                    } else {
+                        it.transform(
+                            output = output,
+                            entryFactory = ::JarArchiveEntry,
+                            transformer = transformer
+                        )
+                    }
+                }
             }
-            "class" -> this.inputStream().use {
-                it.transform(transformer).redirect(output)
+            "class" -> {
+                this.inputStream().use {
+                    it.transform(transformer).redirect(output)
+                }
             }
             else -> this.copyTo(output, true)
         }
@@ -50,19 +76,90 @@ fun File.transform(output: File, transformer: (ByteArray) -> ByteArray = { it ->
     }
 }
 
+fun isTargetJar(jarName: String): Boolean {
+    return jarName.contains("glide-4.13.2", true)
+}
+
+fun isTargetClass(className: String): Boolean {
+    return className.contains("com/bumptech/glide/load/resource/drawable/DrawableDecoderCompat.class", true)
+}
+
 fun InputStream.transform(transformer: (ByteArray) -> ByteArray): ByteArray {
     return transformer(readBytes())
 }
 
-fun ZipFile.transform(
-        output: OutputStream,
-        entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-        transformer: (ByteArray) -> ByteArray = { it -> it }
+fun ZipFile.transformTargetJar(
+    output: OutputStream,
+    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+    transformer: (ByteArray) -> ByteArray = { it -> it }
 ) {
     val entries = mutableSetOf<String>()
-    val creator = ParallelScatterZipCreator(ThreadPoolExecutor(NCPU, NCPU, 0L, TimeUnit.MILLISECONDS, LinkedBlockingQueue<Runnable>(), Executors.defaultThreadFactory(), RejectedExecutionHandler { runnable, _ ->
-        runnable.run()
-    }))
+    val creator = ParallelScatterZipCreator(
+        ThreadPoolExecutor(
+            NCPU,
+            NCPU,
+            0L,
+            TimeUnit.MILLISECONDS,
+            LinkedBlockingQueue<Runnable>(),
+            Executors.defaultThreadFactory(),
+            RejectedExecutionHandler { runnable, _ ->
+                runnable.run()
+            }
+        )
+    )
+
+    entries().asSequence().forEach { entry ->
+        if (!entries.contains(entry.name)) {
+            if (isTargetClass(entry.name)) {
+                logger("jarFile: targetClass: classPath: ${this.name}, className: ${entry.name}")
+            } else {
+                val zae = entryFactory(entry)
+                val stream = InputStreamSupplier {
+                    when (entry.name.substringAfterLast('.', "")) {
+                        "class" -> {
+                            getInputStream(entry).use { src ->
+                                try {
+                                    src.transform(transformer).inputStream()
+                                } catch (e: Throwable) {
+                                    System.err.println("Broken class: ${this.name}!/${entry.name}")
+                                    getInputStream(entry)
+                                }
+                            }
+                        }
+                        else -> getInputStream(entry)
+                    }
+                }
+
+                creator.addArchiveEntry(zae, stream)
+                entries.add(entry.name)
+            }
+        } else {
+            System.err.println("Duplicated jar entry: ${this.name}!/${entry.name}")
+        }
+    }
+
+    ZipArchiveOutputStream(output).use(creator::writeTo)
+}
+
+fun ZipFile.transform(
+    output: OutputStream,
+    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+    transformer: (ByteArray) -> ByteArray = { it -> it }
+) {
+    val entries = mutableSetOf<String>()
+    val creator = ParallelScatterZipCreator(
+        ThreadPoolExecutor(
+            NCPU,
+            NCPU,
+            0L,
+            TimeUnit.MILLISECONDS,
+            LinkedBlockingQueue<Runnable>(),
+            Executors.defaultThreadFactory(),
+            RejectedExecutionHandler { runnable, _ ->
+                runnable.run()
+            }
+        )
+    )
 
     entries().asSequence().forEach { entry ->
         if (!entries.contains(entry.name)) {
@@ -91,18 +188,29 @@ fun ZipFile.transform(
     ZipArchiveOutputStream(output).use(creator::writeTo)
 }
 
+fun ZipFile.transformTargetJar(
+    output: File,
+    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+    transformer: (ByteArray) -> ByteArray = { it -> it }
+) {
+    logger("targetJar: outputFile: $output")
+    output.touch().outputStream().buffered().use {
+        transformTargetJar(it, entryFactory, transformer)
+    }
+}
+
 fun ZipFile.transform(
-        output: File,
-        entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-        transformer: (ByteArray) -> ByteArray = { it -> it }
+    output: File,
+    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+    transformer: (ByteArray) -> ByteArray = { it -> it }
 ) = output.touch().outputStream().buffered().use {
     transform(it, entryFactory, transformer)
 }
 
 fun ZipInputStream.transform(
-        output: OutputStream,
-        entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-        transformer: (ByteArray) -> ByteArray
+    output: OutputStream,
+    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+    transformer: (ByteArray) -> ByteArray
 ) {
     val creator = ParallelScatterZipCreator()
     val entries = mutableSetOf<String>()
@@ -124,9 +232,9 @@ fun ZipInputStream.transform(
 }
 
 fun ZipInputStream.transform(
-        output: File,
-        entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-        transformer: (ByteArray) -> ByteArray
+    output: File,
+    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
+    transformer: (ByteArray) -> ByteArray
 ) = output.touch().outputStream().buffered().use {
     transform(it, entryFactory, transformer)
 }

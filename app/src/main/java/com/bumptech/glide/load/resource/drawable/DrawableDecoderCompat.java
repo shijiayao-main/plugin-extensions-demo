@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ import androidx.core.content.res.ResourcesCompat;
  * support library otherwise.
  */
 public final class DrawableDecoderCompat {
+    private static final String TAG = "DrawableDecoderCompat";
+
     private static volatile boolean shouldCallAppCompatResources = true;
 
     private DrawableDecoderCompat() {
@@ -69,6 +72,7 @@ public final class DrawableDecoderCompat {
 
     private static Drawable loadDrawableV7(
             Context context, @DrawableRes int id, @Nullable Theme theme) {
+        Log.d(TAG, "loadDrawableV7: ");
         Context resourceContext;
         if (theme != null) {
             ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, theme);
@@ -83,6 +87,7 @@ public final class DrawableDecoderCompat {
     }
 
     private static Drawable loadDrawableV4(Context context, @DrawableRes int id, @Nullable Theme theme) {
+        Log.d(TAG, "loadDrawableV4: ");
         Resources resources;
         if (theme != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             resources = theme.getResources();

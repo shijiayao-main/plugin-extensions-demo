@@ -2,10 +2,10 @@ package com.jiaoay.plugins.demo
 
 import com.android.build.api.transform.TransformInvocation
 import com.didiglobal.booster.gradle.project
+import com.jiaoay.plugins.core.isQualifiedClass
 import com.jiaoay.plugins.core.transform.TransformContext
 import com.jiaoay.plugins.core.transform.Transformer
 import com.jiaoay.plugins.demo.config.DemoConfig
-import org.gradle.api.logging.LogLevel
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
@@ -21,12 +21,12 @@ class DemoTransformer : Transformer {
 
     override fun onPreTransform(context: TransformContext) {
         super.onPreTransform(context)
-        context.logger("onPreTransform: ")
+        logger("onPreTransform: ")
     }
 
     override fun onPostTransform(context: TransformContext) {
         super.onPostTransform(context)
-        context.logger("onPostTransform: ")
+        logger("onPostTransform: ")
     }
 
     override fun transform(context: TransformContext, bytecode: ByteArray): ByteArray {
@@ -57,25 +57,12 @@ class DemoTransformer : Transformer {
 //            if (classNode.name.contains("DrawableDecoderCompat", ignoreCase = true)) {
 //                context.logger("name: ${classNode.name}, sourceFile: ${classNode.sourceFile}")
 //            }
-            context.logger("name: ${classNode.name}")
+            logger("name: ${classNode.name}")
             classNode.accept(writer)
         }.toByteArray()
     }
 
-    private val ClassReader.isQualifiedClass: Boolean
-        get() {
-            return !(access.and(Opcodes.ACC_INTERFACE) != 0 ||
-                    access.and(Opcodes.ACC_ABSTRACT) != 0 ||
-                    access.and(Opcodes.ACC_ENUM) != 0 ||
-                    access.and(Opcodes.ACC_ANNOTATION) != 0 ||
-                    access.and(Opcodes.ACC_MODULE) != 0 ||
-                    access.and(Opcodes.ACC_SYNTHETIC) != 0)
-        }
-
-
-    private fun TransformContext.logger(message: String, level: LogLevel = LogLevel.ERROR) {
-        if (this is TransformInvocation) {
-            this.project.logger.log(level, "${config?.tag ?: TAG}: $message")
-        }
+    private fun logger(message: String) {
+        com.jiaoay.plugins.core.logger("${config?.tag ?: TAG}: $message")
     }
 }

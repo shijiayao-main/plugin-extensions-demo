@@ -5,7 +5,7 @@ import org.gradle.api.Project
 open class DemoConfig {
 
     companion object {
-        const val Name = "pluginDemo"
+        internal const val Name = "pluginDemo"
 
         fun get(project: Project): DemoConfig {
             val config = project.extensions.getByName(Name)

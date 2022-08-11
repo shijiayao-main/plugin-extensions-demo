@@ -15,7 +15,7 @@ import org.gradle.api.reflect.TypeOf
 class ExtensionsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-
+        pluginProject = project
         project.extensions.findByName("android") ?: throw GradleException("$project is not an Android project")
 
         if (!GTE_V3_6) {
@@ -34,10 +34,10 @@ class ExtensionsPlugin : Plugin<Project> {
 
         if (appPlugin) {
             val extensions: AppExtension? = project.extensions.findByType(TypeOf.typeOf(AppExtension::class.java))
-            extensions?.registerTransform(PluginTransform.newInstance(project))
+            extensions?.registerTransform(ExtensionsPluginTransform.newInstance(project))
         } else if (libPlugin) {
             val extensions: LibraryExtension? = project.extensions.findByType(TypeOf.typeOf(LibraryExtension::class.java))
-            extensions?.registerTransform(PluginTransform.newInstance(project))
+            extensions?.registerTransform(ExtensionsPluginTransform.newInstance(project))
         }
 
 //         AutoService
@@ -49,6 +49,7 @@ class ExtensionsPlugin : Plugin<Project> {
                 project.setup(processors)
             }
         }
+        pluginProject = null
     }
 
     private fun Project.loadConfig() {

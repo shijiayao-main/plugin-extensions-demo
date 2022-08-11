@@ -1,4 +1,4 @@
-package com.jiaoay.plugin.sdk_patcher
+package com.jiaoay.plugin.core
 
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASS)

@@ -1,10 +1,10 @@
 package com.jiaoay.plugins.core.internal
 
 import com.android.build.api.variant.VariantInfo
-import com.jiaoay.plugins.core.PluginTransform
+import com.jiaoay.plugins.core.ExtensionsPluginTransform
 import com.jiaoay.plugins.core.TransformParameter
 
-internal class PluginTransformV34(parameter: TransformParameter) : PluginTransform(parameter) {
+internal class PluginTransformV34(parameter: TransformParameter) : ExtensionsPluginTransform(parameter) {
 
     @Suppress("UnstableApiUsage")
     override fun applyToVariant(variant: VariantInfo): Boolean {

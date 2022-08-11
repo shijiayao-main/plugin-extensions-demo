@@ -35,8 +35,12 @@ android {
     }
 }
 
+extensionsPlugin {
+    isEnableSdkPatcher = true
+}
+
 pluginDemo {
-    isEnable = true
+    isEnable = false
     tag = "这是一个Demo"
 }
 

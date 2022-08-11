@@ -24,6 +24,10 @@ class ExtensionsPlugin : Plugin<Project> {
             )
         }
 
+//        Config
+        project.loadConfig()
+
+
         val appPlugin = project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.dynamic-feature")
         val libPlugin = project.plugins.hasPlugin("com.android.library")
 
@@ -46,7 +50,16 @@ class ExtensionsPlugin : Plugin<Project> {
         }
     }
 
+    private fun Project.loadConfig() {
+        loadPluginConfig(buildscript.classLoader).forEach { config ->
+            val configName = config.getConfigName()
+            val configClass = config.getConfigClass()
+            project.extensions.create(configName, configClass)
+        }
+    }
+
     private fun Project.setup(processors: List<VariantProcessor>) {
+
         val android = project.getAndroid<BaseExtension>()
         when (android) {
             is AppExtension -> android.applicationVariants

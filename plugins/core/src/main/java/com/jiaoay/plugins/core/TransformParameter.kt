@@ -7,13 +7,19 @@ import org.gradle.api.plugins.PluginContainer
 import java.io.Serializable
 
 data class TransformParameter(
-        val name: String,
-        val buildscript: ScriptHandler,
-        val plugins: PluginContainer,
-        val properties: Map<String, Any?>,
-        val transformers: Set<Class<Transformer>>
+    val name: String,
+    val buildscript: ScriptHandler,
+    val plugins: PluginContainer,
+    val properties: Map<String, Any?>,
+    val transformers: Set<Class<Transformer>>
 ) : Serializable
 
 fun Project.newTransformParameter(name: String): TransformParameter {
-    return TransformParameter(name, buildscript, plugins, properties, lookupTransformers(buildscript.classLoader))
+    return TransformParameter(
+        name = name,
+        buildscript = buildscript,
+        plugins = plugins,
+        properties = properties,
+        transformers = lookupTransformers(buildscript.classLoader)
+    )
 }

@@ -1,11 +1,12 @@
 package com.jiaoay.plugins.core
 
+import com.jiaoay.plugins.core.config.PluginConfig
 import com.jiaoay.plugins.core.task.spi.VariantProcessor
 import com.jiaoay.plugins.core.transform.Transformer
 import org.gradle.api.Project
 import java.net.URL
 import java.nio.charset.StandardCharsets
-import java.util.ServiceConfigurationError
+import java.util.*
 
 internal interface ServiceLoader<T> {
     fun load(vararg args: Any): List<T>
@@ -13,9 +14,9 @@ internal interface ServiceLoader<T> {
 
 @Suppress("UNCHECKED_CAST")
 private class ServiceLoaderImpl<T>(
-        private val classLoader: ClassLoader,
-        private val service: Class<T>,
-        private vararg val types: Class<*>
+    private val classLoader: ClassLoader,
+    private val service: Class<T>,
+    private vararg val types: Class<*>
 ) : ServiceLoader<T> {
 
     private val name = "META-INF/services/${service.name}"
@@ -55,6 +56,13 @@ internal class ServiceLoaderFactory<T>(private val classLoader: ClassLoader, pri
 
 internal inline fun <reified T> newServiceLoader(classLoader: ClassLoader, vararg types: Class<*>): ServiceLoader<T> {
     return ServiceLoaderFactory(classLoader, T::class.java).newServiceLoader(*types)
+}
+
+/**
+ * load config
+ */
+internal fun loadPluginConfig(classLoader: ClassLoader): List<PluginConfig> {
+    return ServiceLoaderImpl(classLoader, PluginConfig::class.java, ClassLoader::class.java).load()
 }
 
 /**

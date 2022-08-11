@@ -35,6 +35,10 @@ android {
     }
 }
 
+sdkPatcher {
+    isEnable = false
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.7.0")

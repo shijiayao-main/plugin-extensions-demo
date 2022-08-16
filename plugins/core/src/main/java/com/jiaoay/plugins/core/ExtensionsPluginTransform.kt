@@ -10,12 +10,9 @@ import com.didiglobal.booster.gradle.SCOPE_FULL_WITH_FEATURES
 import com.didiglobal.booster.gradle.SCOPE_PROJECT
 import com.didiglobal.booster.gradle.project
 import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
+import com.jiaoay.plugins.core.extensions.initSdkPatcher
 import com.jiaoay.plugins.core.internal.PluginTransformV34
 import org.gradle.api.Project
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.tree.ClassNode
-import java.io.File
-import java.io.FileInputStream
 
 open class ExtensionsPluginTransform protected constructor(
     internal val parameter: TransformParameter
@@ -61,65 +58,24 @@ open class ExtensionsPluginTransform protected constructor(
             config
         }
 
-        if (extensionsPluginConfig.isEnableSdkPatcher) {
+        val replaceClassMap: Map<String, List<String>>? = if (extensionsPluginConfig.isEnableSdkPatcher) {
             initSdkPatcher(invocation = invocation)
+        } else {
+            null
         }
 
-        PluginTransformInvocation(invocation, this).apply {
+        extensionsPluginConfig.replaceClassMap = replaceClassMap
 
-            // TODO: 判断下是否启用替换jar中class的功能，启用需要处理下这种情况
-            logger("isIncremental: $isIncremental")
+        PluginTransformInvocation(
+            delegate = invocation,
+            transform = this,
+            config = extensionsPluginConfig
+        ).apply {
             if (isIncremental) {
                 doIncrementalTransform()
             } else {
                 outputProvider?.deleteAll()
                 doFullTransform()
-            }
-        }
-    }
-
-    /**
-     * 找到那些类添加了注解
-     */
-    private fun initSdkPatcher(invocation: TransformInvocation) {
-        // 不支持增量编译
-        val outputProvider = invocation.outputProvider
-        if (invocation.isIncremental.not()) {
-            outputProvider.deleteAll()
-        }
-        invocation.inputs.forEach { input ->
-            // TODO: 当前仅处理目录中的，如果之后jar中也有，再单独处理
-            input.directoryInputs.forEach { directoryInput ->
-                val file = directoryInput.file
-                if (file.isDirectory.not()) {
-                    return
-                }
-                handleFile(inputFile = file)
-            }
-        }
-    }
-
-    private fun handleFile(inputFile: File) {
-        val files: Array<File> = inputFile.listFiles()!!
-        for (file in files) {
-            if (file.isDirectory) {
-                handleFile(file)
-            } else if (file.isFile) {
-                val fileInputStream = FileInputStream(file)
-                fileInputStream.use { inputStream ->
-                    try {
-                        val classReader = ClassReader(inputStream)
-                        if (classReader.isQualifiedClass.not()) {
-                            return@use
-                        }
-                        val classNode = ClassNode()
-                        classReader.accept(classNode, 0)
-                        logger("className: ${classNode.name}")
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        logger("error: file: ${file.name}")
-                    }
-                }
             }
         }
     }

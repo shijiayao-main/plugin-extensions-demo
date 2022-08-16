@@ -14,6 +14,7 @@ import com.didiglobal.booster.gradle.processedRes
 import com.didiglobal.booster.gradle.symbolList
 import com.didiglobal.booster.gradle.symbolListWithPackageName
 import com.didiglobal.booster.kotlinx.search
+import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
 import com.jiaoay.plugins.core.util.TransformHelper
 import java.io.File
 
@@ -22,7 +23,18 @@ import java.io.File
  *
  * @author johnsonlee
  */
-class VariantTransformHelper(variant: BaseVariant, input: File) : TransformHelper(input, variant.platform, variant.artifacts, variant.applicationId, variant.name)
+class VariantTransformHelper(
+    variant: BaseVariant,
+    input: File,
+    config: ExtensionsPluginConfig
+) : TransformHelper(
+    input = input,
+    platform = variant.platform,
+    artifacts = variant.artifacts,
+    applicationId = variant.applicationId,
+    variant = variant.name,
+    config = config
+)
 
 val BaseVariant.artifacts: ArtifactManager
     get() = object : ArtifactManager {

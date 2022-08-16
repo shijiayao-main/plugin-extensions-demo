@@ -34,6 +34,8 @@ dependencies {
     api(libs.asmUtil)
 //    compileOnly("com.android.tools.build:gradle:4.0.0")
     compileOnly(libs.androidBuildTools)
+
+    api(project(":core-extensions"))
 }
 
 gradlePlugin {

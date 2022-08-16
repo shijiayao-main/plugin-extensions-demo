@@ -3,6 +3,7 @@ package com.jiaoay.plugins.core.util
 import com.didiglobal.booster.build.AndroidSdk
 import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.kotlinx.file
+import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
 import com.jiaoay.plugins.core.transform.AbstractTransformContext
 import com.jiaoay.plugins.core.transform.ArtifactManager
 import com.jiaoay.plugins.core.transform.TransformContext
@@ -30,7 +31,8 @@ open class TransformHelper(
     val platform: File = AndroidSdk.getAndroidJar().parentFile,
     val artifacts: ArtifactManager = object : ArtifactManager {},
     val applicationId: String = UUID.randomUUID().toString(),
-    val variant: String = "debug"
+    val variant: String = "debug",
+    val config: ExtensionsPluginConfig
 ) {
 
     fun transform(output: File = TMPDIR, transformer: (TransformContext, ByteArray) -> ByteArray = { _, it -> it }) = transform(output, object : Transformer {
@@ -79,7 +81,10 @@ open class TransformHelper(
 
             inputs.map {
                 executor.submit {
-                    it.transform(context.buildDir.file("transforms", it.name)) { bytecode ->
+                    it.transform(
+                        output = context.buildDir.file("transforms", it.name),
+                        config = config
+                    ) { bytecode ->
                         transformers.fold(bytecode) { bytes, transformer ->
                             transformer.transform(context, bytes)
                         }

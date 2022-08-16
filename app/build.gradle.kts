@@ -57,4 +57,6 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.13.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
+    implementation("com.jiaoay.plugins:core-extensions")
 }

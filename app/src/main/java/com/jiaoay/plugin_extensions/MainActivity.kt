@@ -1,5 +1,6 @@
 package com.jiaoay.plugin_extensions
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -18,7 +19,8 @@ class MainActivity : AppCompatActivity() {
 
         Glide.with(this)
             .asDrawable()
-            .load(R.drawable.ic_launcher_background)
+            .load(Uri.EMPTY)
+            .placeholder(R.drawable.ic_launcher_background)
             .theme(theme)
             .into(binding.image)
 

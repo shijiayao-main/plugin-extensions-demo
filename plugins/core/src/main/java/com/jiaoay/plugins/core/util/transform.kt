@@ -4,6 +4,9 @@ import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.kotlinx.redirect
 import com.didiglobal.booster.kotlinx.search
 import com.didiglobal.booster.kotlinx.touch
+import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
+import com.jiaoay.plugins.core.extensions.isTargetClass
+import com.jiaoay.plugins.core.extensions.isTargetJar
 import com.jiaoay.plugins.core.logger
 import org.apache.commons.compress.archivers.jar.JarArchiveEntry
 import org.apache.commons.compress.archivers.zip.ParallelScatterZipCreator
@@ -32,27 +35,33 @@ import java.util.zip.ZipInputStream
  * @param output The output location
  * @param transformer The byte data transformer
  */
-fun File.transform(output: File, transformer: (ByteArray) -> ByteArray = { it -> it }) {
+fun File.transform(
+    output: File,
+    config: ExtensionsPluginConfig,
+    transformer: (ByteArray) -> ByteArray = { it -> it }
+) {
     when {
         isDirectory -> this.toURI().let { base ->
             this.search().parallelStream().forEach {
                 it.transform(
-                    File(
+                    output = File(
                         output, base.relativize(it.toURI()).path
                     ),
-                    transformer
+                    config = config,
+                    transformer = transformer
                 )
             }
         }
         isFile -> when (extension.lowercase(Locale.getDefault())) {
-            // TODO: 这里去移除掉指定的class从而实现替换, class的不用这么改，只处理改不了的就好
             "jar" -> {
                 val jarName = this.name
                 JarFile(this).use {
-                    if (isTargetJar(jarName)) {
+                    if (config.isTargetJar(jarName)) {
                         logger("targetJar: name: $jarName")
                         it.transformTargetJar(
                             output = output,
+                            jarName = jarName,
+                            config = config,
                             entryFactory = ::JarArchiveEntry,
                             transformer = transformer
                         )
@@ -76,20 +85,14 @@ fun File.transform(output: File, transformer: (ByteArray) -> ByteArray = { it ->
     }
 }
 
-fun isTargetJar(jarName: String): Boolean {
-    return jarName.contains("glide-4.13.2", true)
-}
-
-fun isTargetClass(className: String): Boolean {
-    return className.contains("com/bumptech/glide/load/resource/drawable/DrawableDecoderCompat.class", true)
-}
-
 fun InputStream.transform(transformer: (ByteArray) -> ByteArray): ByteArray {
     return transformer(readBytes())
 }
 
 fun ZipFile.transformTargetJar(
     output: OutputStream,
+    jarName: String,
+    config: ExtensionsPluginConfig,
     entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
     transformer: (ByteArray) -> ByteArray = { it -> it }
 ) {
@@ -110,7 +113,7 @@ fun ZipFile.transformTargetJar(
 
     entries().asSequence().forEach { entry ->
         if (!entries.contains(entry.name)) {
-            if (isTargetClass(entry.name)) {
+            if (config.isTargetClass(jarName = jarName, className = entry.name)) {
                 logger("jarFile: targetClass: classPath: ${this.name}, className: ${entry.name}")
             } else {
                 val zae = entryFactory(entry)
@@ -190,12 +193,20 @@ fun ZipFile.transform(
 
 fun ZipFile.transformTargetJar(
     output: File,
+    jarName: String,
+    config: ExtensionsPluginConfig,
     entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
     transformer: (ByteArray) -> ByteArray = { it -> it }
 ) {
     logger("targetJar: outputFile: $output")
     output.touch().outputStream().buffered().use {
-        transformTargetJar(it, entryFactory, transformer)
+        transformTargetJar(
+            output = it,
+            jarName = jarName,
+            config = config,
+            entryFactory = entryFactory,
+            transformer = transformer
+        )
     }
 }
 

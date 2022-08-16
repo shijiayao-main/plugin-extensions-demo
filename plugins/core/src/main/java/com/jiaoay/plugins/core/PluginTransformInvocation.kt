@@ -25,6 +25,7 @@ import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.kotlinx.file
 import com.didiglobal.booster.kotlinx.green
 import com.didiglobal.booster.kotlinx.red
+import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
 import com.jiaoay.plugins.core.transform.AbstractKlassPool
 import com.jiaoay.plugins.core.transform.ArtifactManager
 import com.jiaoay.plugins.core.transform.Collector
@@ -48,7 +49,8 @@ import java.util.concurrent.TimeUnit
 
 internal class PluginTransformInvocation(
     private val delegate: TransformInvocation,
-    private val transform: ExtensionsPluginTransform
+    private val transform: ExtensionsPluginTransform,
+    private val config: ExtensionsPluginConfig
 ) : TransformInvocation by delegate, TransformContext, ArtifactManager {
 
     private val outputs = CopyOnWriteArrayList<File>()
@@ -279,7 +281,7 @@ internal class PluginTransformInvocation(
     private fun File.transform(output: File) {
         outputs += output
         project.logger.info("Booster transforming $this => $output")
-        this.transform(output) { bytecode ->
+        this.transform(output = output, config = config) { bytecode ->
             bytecode.transform()
         }
     }

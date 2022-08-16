@@ -14,10 +14,13 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.jiaoay.plugins.core.Replace;
+
 /**
  * Handles decoding Drawables with the v7 support library if present and falling back to the v4
  * support library otherwise.
  */
+@Replace(name = "glide-4.13.2")
 public final class DrawableDecoderCompat {
     private static final String TAG = "DrawableDecoderCompat";
 

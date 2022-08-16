@@ -17,4 +17,6 @@ open class ExtensionsPluginConfig {
     }
 
     var isEnableSdkPatcher: Boolean = false
+
+    var replaceClassMap: Map<String, List<String>>? = null
 }

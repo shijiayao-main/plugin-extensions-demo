@@ -1,102 +1,78 @@
-package com.bumptech.glide.load.resource.drawable;
+package com.bumptech.glide.load.resource.drawable
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.Resources.Theme;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.util.Log;
+import android.content.Context
+import android.content.res.Resources
+import android.content.res.Resources.Theme
+import android.graphics.drawable.Drawable
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import com.jiaoay.plugins.core.Replace
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-
-import com.jiaoay.plugins.core.Replace;
-
-/**
- * Handles decoding Drawables with the v7 support library if present and falling back to the v4
- * support library otherwise.
- */
 @Replace(name = "glide-4.13.2")
-public final class DrawableDecoderCompat {
-    private static final String TAG = "DrawableDecoderCompat";
+object DrawableDecoderCompat {
 
-    private static volatile boolean shouldCallAppCompatResources = true;
+    @Volatile
+    private var shouldCallAppCompatResources = true
 
-    private DrawableDecoderCompat() {
-        // Utility class.
+    @JvmStatic
+    fun getDrawable(
+        ourContext: Context, targetContext: Context, @DrawableRes id: Int
+    ): Drawable? {
+        return getDrawable(ourContext, targetContext, id,  /*theme=*/null)
     }
 
-    /**
-     * See {@code getDrawable(Context, int, Theme)}.
-     */
-    public static Drawable getDrawable(
-            Context ourContext, Context targetContext, @DrawableRes int id) {
-        return getDrawable(ourContext, targetContext, id, /*theme=*/ null);
+    @JvmStatic
+    fun getDrawable(
+        ourContext: Context, @DrawableRes id: Int, theme: Theme?
+    ): Drawable? {
+        return getDrawable(ourContext, ourContext, id, theme)
     }
 
-    /**
-     * Loads a Drawable using {@link AppCompatResources} if available and {@link ResourcesCompat}
-     * otherwise, depending on whether or not the v7 support library is included in the application.
-     *
-     * @param theme Used instead of the {@link Theme} returned from the given {@link Context} if
-     *              non-null when loading the {@link Drawable}.
-     */
-    public static Drawable getDrawable(
-            Context ourContext, @DrawableRes int id, @Nullable Theme theme) {
-        return getDrawable(ourContext, ourContext, id, theme);
-    }
-
-    private static Drawable getDrawable(
-            Context ourContext, Context targetContext, @DrawableRes int id, @Nullable Theme theme) {
+    private fun getDrawable(
+        ourContext: Context, targetContext: Context, @DrawableRes id: Int, theme: Theme?
+    ): Drawable? {
         try {
             // Race conditions may cause us to attempt to load using v7 more than once. That's ok since
             // this check is a modest optimization and the output will be correct anyway.
             if (shouldCallAppCompatResources) {
-                return loadDrawableV7(targetContext, id, theme);
+                return loadDrawableV7(targetContext, id, theme)
             }
-        } catch (NoClassDefFoundError error) {
-            shouldCallAppCompatResources = false;
-        } catch (IllegalStateException e) {
-            if (ourContext.getPackageName().equals(targetContext.getPackageName())) {
-                throw e;
+        } catch (error: NoClassDefFoundError) {
+            shouldCallAppCompatResources = false
+        } catch (e: IllegalStateException) {
+            if (ourContext.packageName == targetContext.packageName) {
+                throw e
             }
-            return ContextCompat.getDrawable(targetContext, id);
-        } catch (Resources.NotFoundException e) {
+            return ContextCompat.getDrawable(targetContext, id)
+        } catch (e: Resources.NotFoundException) {
             // Ignored, this can be thrown when drawable compat attempts to decode a canary resource. If
             // that decode attempt fails, we still want to try with the v4 ResourcesCompat below.
         }
-
-        return loadDrawableV4(targetContext, id, theme != null ? theme : targetContext.getTheme());
+        return loadDrawableV4(targetContext, id, theme ?: targetContext.theme)
     }
 
-    private static Drawable loadDrawableV7(
-            Context context, @DrawableRes int id, @Nullable Theme theme) {
-        Log.d(TAG, "loadDrawableV7: ");
-        Context resourceContext;
-        if (theme != null) {
-            ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, theme);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                contextThemeWrapper.applyOverrideConfiguration(theme.getResources().getConfiguration());
-            }
-            resourceContext = contextThemeWrapper;
+    private fun loadDrawableV7(
+        context: Context, @DrawableRes id: Int, theme: Theme?
+    ): Drawable? {
+        val resourceContext: Context = if (theme != null) {
+            val contextThemeWrapper = ContextThemeWrapper(context, theme)
+            contextThemeWrapper.applyOverrideConfiguration(theme.resources.configuration)
+            contextThemeWrapper
         } else {
-            resourceContext = context;
+            context
         }
-        return AppCompatResources.getDrawable(resourceContext, id);
+        return AppCompatResources.getDrawable(resourceContext, id)
     }
 
-    private static Drawable loadDrawableV4(Context context, @DrawableRes int id, @Nullable Theme theme) {
-        Log.d(TAG, "loadDrawableV4: ");
-        Resources resources;
-        if (theme != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            resources = theme.getResources();
+    private fun loadDrawableV4(context: Context, @DrawableRes id: Int, theme: Theme?): Drawable? {
+        val resources: Resources = if (theme != null) {
+            theme.resources
         } else {
-            resources = context.getResources();
+            context.resources
         }
-        return ResourcesCompat.getDrawable(resources, id, theme);
+        return ResourcesCompat.getDrawable(resources, id, theme)
     }
 }

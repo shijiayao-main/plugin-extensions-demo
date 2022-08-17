@@ -1,7 +1,7 @@
 package com.jiaoay.plugins.core
 
 import com.jiaoay.plugins.core.config.PluginConfig
-import com.jiaoay.plugins.core.task.spi.VariantProcessor
+import com.jiaoay.plugins.core.spi.VariantProcessor
 import com.jiaoay.plugins.core.transform.Transformer
 import java.net.URL
 import java.nio.charset.StandardCharsets

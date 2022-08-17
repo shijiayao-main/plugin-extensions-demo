@@ -6,7 +6,7 @@ import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.api.BaseVariant
 import com.didiglobal.booster.gradle.GTE_V3_6
 import com.didiglobal.booster.gradle.getAndroid
-import com.jiaoay.plugins.core.task.spi.VariantProcessor
+import com.jiaoay.plugins.core.spi.VariantProcessor
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

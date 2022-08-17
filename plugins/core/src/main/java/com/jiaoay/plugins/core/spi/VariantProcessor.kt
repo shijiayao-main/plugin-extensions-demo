@@ -1,4 +1,4 @@
-package com.jiaoay.plugins.core.task.spi
+package com.jiaoay.plugins.core.spi
 
 import com.android.build.gradle.api.BaseVariant
 

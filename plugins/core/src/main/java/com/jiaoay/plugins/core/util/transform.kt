@@ -59,19 +59,13 @@ fun File.transform(
                     val targetJarList = config.getTargetJarList(jarName = jarName)
                     if (targetJarList.isNotEmpty()) {
                         logger("targetJar: name: $jarName")
-                        it.transformTargetJar(
-                            output = output,
-                            targetJarList = targetJarList,
-                            entryFactory = ::JarArchiveEntry,
-                            transformer = transformer
-                        )
-                    } else {
-                        it.transform(
-                            output = output,
-                            entryFactory = ::JarArchiveEntry,
-                            transformer = transformer
-                        )
                     }
+                    it.transform(
+                        output = output,
+                        targetJarList = targetJarList,
+                        entryFactory = ::JarArchiveEntry,
+                        transformer = transformer
+                    )
                 }
             }
             "class" -> {
@@ -89,7 +83,7 @@ fun InputStream.transform(transformer: (ByteArray) -> ByteArray): ByteArray {
     return transformer(readBytes())
 }
 
-fun ZipFile.transformTargetJar(
+fun ZipFile.transform(
     output: OutputStream,
     targetJarList: List<String>,
     entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
@@ -144,75 +138,19 @@ fun ZipFile.transformTargetJar(
 }
 
 fun ZipFile.transform(
-    output: OutputStream,
-    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-    transformer: (ByteArray) -> ByteArray = { it -> it }
-) {
-    val entries = mutableSetOf<String>()
-    val creator = ParallelScatterZipCreator(
-        ThreadPoolExecutor(
-            NCPU,
-            NCPU,
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable>(),
-            Executors.defaultThreadFactory(),
-            RejectedExecutionHandler { runnable, _ ->
-                runnable.run()
-            }
-        )
-    )
-
-    entries().asSequence().forEach { entry ->
-        if (!entries.contains(entry.name)) {
-            val zae = entryFactory(entry)
-            val stream = InputStreamSupplier {
-                when (entry.name.substringAfterLast('.', "")) {
-                    "class" -> getInputStream(entry).use { src ->
-                        try {
-                            src.transform(transformer).inputStream()
-                        } catch (e: Throwable) {
-                            System.err.println("Broken class: ${this.name}!/${entry.name}")
-                            getInputStream(entry)
-                        }
-                    }
-                    else -> getInputStream(entry)
-                }
-            }
-
-            creator.addArchiveEntry(zae, stream)
-            entries.add(entry.name)
-        } else {
-            System.err.println("Duplicated jar entry: ${this.name}!/${entry.name}")
-        }
-    }
-
-    ZipArchiveOutputStream(output).use(creator::writeTo)
-}
-
-fun ZipFile.transformTargetJar(
     output: File,
     targetJarList: List<String>,
     entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
     transformer: (ByteArray) -> ByteArray = { it -> it }
 ) {
-    logger("targetJar: outputFile: $output")
     output.touch().outputStream().buffered().use {
-        transformTargetJar(
+        transform(
             output = it,
-            targetJarList = targetJarList,
             entryFactory = entryFactory,
+            targetJarList = targetJarList,
             transformer = transformer
         )
     }
-}
-
-fun ZipFile.transform(
-    output: File,
-    entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
-    transformer: (ByteArray) -> ByteArray = { it -> it }
-) = output.touch().outputStream().buffered().use {
-    transform(it, entryFactory, transformer)
 }
 
 fun ZipInputStream.transform(

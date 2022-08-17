@@ -10,7 +10,6 @@ import com.didiglobal.booster.gradle.SCOPE_FULL_WITH_FEATURES
 import com.didiglobal.booster.gradle.SCOPE_PROJECT
 import com.didiglobal.booster.gradle.project
 import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
-import com.jiaoay.plugins.core.extensions.initSdkPatcher
 import com.jiaoay.plugins.core.internal.PluginTransformV34
 import org.gradle.api.Project
 
@@ -58,13 +57,12 @@ open class ExtensionsPluginTransform protected constructor(
             config
         }
 
-        val replaceClassMap: Map<String, List<String>>? = if (extensionsPluginConfig.isEnableSdkPatcher) {
-            initSdkPatcher(invocation = invocation)
-        } else {
-            null
+        if (extensionsPluginConfig.autoSearchAnnotation) {
+            autoSearchAnnotation(
+                invocation = invocation,
+                config = extensionsPluginConfig
+            )
         }
-
-        extensionsPluginConfig.replaceClassMap = replaceClassMap
 
         PluginTransformInvocation(
             delegate = invocation,

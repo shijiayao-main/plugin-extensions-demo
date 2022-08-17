@@ -18,5 +18,8 @@ open class ExtensionsPluginConfig {
 
     var isEnableSdkPatcher: Boolean = false
 
-    var replaceClassMap: Map<String, List<String>>? = null
+    // 如果设置为false则不会自动查找annotation，需要手动配置replaceClassMap等参数以确保正常运行
+    var autoSearchAnnotation: Boolean = true
+
+    var replaceClassMap: MutableMap<String, MutableList<String>>? = null
 }

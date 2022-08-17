@@ -6,7 +6,7 @@ import com.didiglobal.booster.kotlinx.search
 import com.didiglobal.booster.kotlinx.touch
 import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
 import com.jiaoay.plugins.core.extensions.isTargetClass
-import com.jiaoay.plugins.core.extensions.isTargetJar
+import com.jiaoay.plugins.core.extensions.getTargetJarList
 import com.jiaoay.plugins.core.logger
 import org.apache.commons.compress.archivers.jar.JarArchiveEntry
 import org.apache.commons.compress.archivers.zip.ParallelScatterZipCreator
@@ -56,12 +56,12 @@ fun File.transform(
             "jar" -> {
                 val jarName = this.name
                 JarFile(this).use {
-                    if (config.isTargetJar(jarName)) {
+                    val targetJarList = config.getTargetJarList(jarName = jarName)
+                    if (targetJarList.isNotEmpty()) {
                         logger("targetJar: name: $jarName")
                         it.transformTargetJar(
                             output = output,
-                            jarName = jarName,
-                            config = config,
+                            targetJarList = targetJarList,
                             entryFactory = ::JarArchiveEntry,
                             transformer = transformer
                         )
@@ -91,8 +91,7 @@ fun InputStream.transform(transformer: (ByteArray) -> ByteArray): ByteArray {
 
 fun ZipFile.transformTargetJar(
     output: OutputStream,
-    jarName: String,
-    config: ExtensionsPluginConfig,
+    targetJarList: List<String>,
     entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
     transformer: (ByteArray) -> ByteArray = { it -> it }
 ) {
@@ -113,7 +112,7 @@ fun ZipFile.transformTargetJar(
 
     entries().asSequence().forEach { entry ->
         if (!entries.contains(entry.name)) {
-            if (config.isTargetClass(jarName = jarName, className = entry.name)) {
+            if (isTargetClass(list = targetJarList, className = entry.name)) {
                 logger("jarFile: targetClass: classPath: ${this.name}, className: ${entry.name}")
             } else {
                 val zae = entryFactory(entry)
@@ -193,8 +192,7 @@ fun ZipFile.transform(
 
 fun ZipFile.transformTargetJar(
     output: File,
-    jarName: String,
-    config: ExtensionsPluginConfig,
+    targetJarList: List<String>,
     entryFactory: (ZipEntry) -> ZipArchiveEntry = ::ZipArchiveEntry,
     transformer: (ByteArray) -> ByteArray = { it -> it }
 ) {
@@ -202,8 +200,7 @@ fun ZipFile.transformTargetJar(
     output.touch().outputStream().buffered().use {
         transformTargetJar(
             output = it,
-            jarName = jarName,
-            config = config,
+            targetJarList = targetJarList,
             entryFactory = entryFactory,
             transformer = transformer
         )

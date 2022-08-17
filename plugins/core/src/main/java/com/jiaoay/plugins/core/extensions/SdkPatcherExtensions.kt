@@ -10,7 +10,6 @@ import com.jiaoay.plugins.core.logger
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.Type
 import org.objectweb.asm.tree.ClassNode
-import org.objectweb.asm.tree.InnerClassNode
 import java.io.File
 import java.io.FileInputStream
 
@@ -90,39 +89,26 @@ private fun handleFile(inputFile: File): List<Pair<String, String>> {
     return replaceItemList.toList()
 }
 
-fun ExtensionsPluginConfig.isTargetJar(jarName: String): Boolean {
+fun ExtensionsPluginConfig.getTargetJarList(jarName: String): List<String> {
     if (isEnableSdkPatcher.not()) {
-        return false
+        return listOf()
     }
-    val map = replaceClassMap ?: return false
+    val map = replaceClassMap ?: return listOf()
+    val list: MutableList<String> = ArrayList()
     map.keys.forEach {
         if (jarName.contains(it)) {
-            return true
-        }
-    }
-    return false
-}
-
-fun ExtensionsPluginConfig.isTargetClass(jarName: String, className: String): Boolean {
-    if (isEnableSdkPatcher.not()) {
-        return false
-    }
-
-    val map = replaceClassMap ?: return false
-    val keyList: MutableList<String> = ArrayList()
-    map.keys.forEach {
-        if (jarName.contains(it)) {
-            keyList.add(it)
-        }
-    }
-
-    keyList.forEach { key ->
-        replaceClassMap?.getOrDefault(key, null)?.let {
-            if (it.contains(className)) {
-                return true
+            map[it]?.let { classList ->
+                list.addAll(classList)
             }
         }
     }
+    return list
+}
 
-    return false
+fun isTargetClass(list: List<String>, className: String): Boolean {
+    if(list.isEmpty()) {
+        return false
+    }
+
+    return list.contains(className)
 }

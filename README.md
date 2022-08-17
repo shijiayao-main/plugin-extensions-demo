@@ -1,3 +1,9 @@
 # plugin-extensions
 
-:core 改了下booster把要用的塞到了一起
+:core 修改自Booster，把booster中几个常用的塞在了一起
+额外支持了通过google AutoService配置config，简单使用的话可以参考:plugin-demo
+建议使用asm
+
+支持替换jar中的对象，例子是:app下DrawableDecoderCompat替换了glide中对应对象，修复了夜间模式下占位图的问题
+这个的替换的主要思路就是在transform时找出添加了注解的对象，然后根据注解不将对象jar中的class输出
+主要实现是在PluginExtensions.kt和SdkPatcherExtensions.kt中

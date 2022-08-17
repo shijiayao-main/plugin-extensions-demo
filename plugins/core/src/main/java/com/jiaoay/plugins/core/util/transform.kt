@@ -5,14 +5,9 @@ import com.didiglobal.booster.kotlinx.redirect
 import com.didiglobal.booster.kotlinx.search
 import com.didiglobal.booster.kotlinx.touch
 import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
-import com.jiaoay.plugins.core.extensions.isTargetClass
 import com.jiaoay.plugins.core.extensions.getTargetJarList
+import com.jiaoay.plugins.core.extensions.isTargetClass
 import com.jiaoay.plugins.core.logger
-import org.apache.commons.compress.archivers.jar.JarArchiveEntry
-import org.apache.commons.compress.archivers.zip.ParallelScatterZipCreator
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
-import org.apache.commons.compress.parallel.InputStreamSupplier
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -28,6 +23,11 @@ import java.util.jar.JarFile
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
+import org.apache.commons.compress.archivers.jar.JarArchiveEntry
+import org.apache.commons.compress.archivers.zip.ParallelScatterZipCreator
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
+import org.apache.commons.compress.parallel.InputStreamSupplier
 
 /**
  * Transform this file or directory to the output by the specified transformer

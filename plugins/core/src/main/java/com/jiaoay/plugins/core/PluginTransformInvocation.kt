@@ -36,8 +36,6 @@ import com.jiaoay.plugins.core.util.CompositeCollector
 import com.jiaoay.plugins.core.util.collect
 import com.jiaoay.plugins.core.util.dex
 import com.jiaoay.plugins.core.util.transform
-import org.apache.commons.codec.digest.DigestUtils.md5Hex
-import org.gradle.api.logging.LogLevel
 import java.io.File
 import java.net.URI
 import java.util.concurrent.Callable
@@ -46,6 +44,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
+import org.apache.commons.codec.digest.DigestUtils.md5Hex
+import org.gradle.api.logging.LogLevel
 
 internal class PluginTransformInvocation(
     private val delegate: TransformInvocation,

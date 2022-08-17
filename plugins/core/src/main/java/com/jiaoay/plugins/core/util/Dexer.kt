@@ -4,7 +4,6 @@ package com.jiaoay.plugins.core.util
 //import com.android.dx.command.dexer.Main
 import com.android.tools.r8.D8
 import com.didiglobal.booster.gradle.GTE_V7_X
-import com.didiglobal.booster.kotlinx.NCPU
 import com.didiglobal.booster.kotlinx.search
 import com.didiglobal.booster.kotlinx.touch
 import java.io.File

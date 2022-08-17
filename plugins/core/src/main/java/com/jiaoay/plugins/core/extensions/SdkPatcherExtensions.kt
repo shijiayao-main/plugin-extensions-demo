@@ -7,11 +7,11 @@ import com.jiaoay.plugins.core.asm.getValue
 import com.jiaoay.plugins.core.config.ExtensionsPluginConfig
 import com.jiaoay.plugins.core.isQualifiedClass
 import com.jiaoay.plugins.core.logger
+import java.io.File
+import java.io.FileInputStream
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.Type
 import org.objectweb.asm.tree.ClassNode
-import java.io.File
-import java.io.FileInputStream
 
 
 /**
@@ -106,7 +106,7 @@ fun ExtensionsPluginConfig.getTargetJarList(jarName: String): List<String> {
 }
 
 fun isTargetClass(list: List<String>, className: String): Boolean {
-    if(list.isEmpty()) {
+    if (list.isEmpty()) {
         return false
     }
 

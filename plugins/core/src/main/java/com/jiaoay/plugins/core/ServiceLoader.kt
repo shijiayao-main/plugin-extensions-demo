@@ -3,10 +3,10 @@ package com.jiaoay.plugins.core
 import com.jiaoay.plugins.core.config.PluginConfig
 import com.jiaoay.plugins.core.task.spi.VariantProcessor
 import com.jiaoay.plugins.core.transform.Transformer
-import org.gradle.api.Project
 import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.*
+import org.gradle.api.Project
 
 internal interface ServiceLoader<T> {
     fun load(vararg args: Any): List<T>

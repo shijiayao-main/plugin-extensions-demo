@@ -4,12 +4,12 @@ import java.io.File
 import java.util.concurrent.CopyOnWriteArrayList
 
 abstract class AbstractTransformContext(
-        final override val applicationId: String,
-        final override val name: String,
-        final override val bootClasspath: Collection<File>,
-        final override val compileClasspath: Collection<File> = emptyList(),
-        final override val runtimeClasspath: Collection<File> = emptyList(),
-        val bootKlassPool: KlassPool = makeKlassPool(bootClasspath)
+    final override val applicationId: String,
+    final override val name: String,
+    final override val bootClasspath: Collection<File>,
+    final override val compileClasspath: Collection<File> = emptyList(),
+    final override val runtimeClasspath: Collection<File> = emptyList(),
+    val bootKlassPool: KlassPool = makeKlassPool(bootClasspath)
 ) : TransformContext {
 
     val collectors = CopyOnWriteArrayList<Collector<*>>()

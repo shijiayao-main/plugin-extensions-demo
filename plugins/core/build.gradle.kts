@@ -23,7 +23,7 @@ dependencies {
 //    api(libs.boosterTransformSpi)
 //    api(libs.boosterTransformUtil)
 
-    api (libs.boosterBuild)
+    api(libs.boosterBuild)
     api("org.apache.commons:commons-compress:1.21")
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r")
 

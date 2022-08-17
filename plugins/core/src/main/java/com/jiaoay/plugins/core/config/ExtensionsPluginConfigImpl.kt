@@ -1,6 +1,6 @@
 package com.jiaoay.plugins.core.config
 
-class ExtensionsPluginConfigImpl: PluginConfig {
+class ExtensionsPluginConfigImpl : PluginConfig {
     override fun getConfigClass(): Class<*> {
         return ExtensionsPluginConfig::class.java
     }

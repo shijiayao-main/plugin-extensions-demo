@@ -1,7 +1,5 @@
 package com.jiaoay.plugins.core.transform
 
-import com.jiaoay.plugins.core.transform.TransformContext
-
 /**
  * Represents the transform lifecycle listener
  *

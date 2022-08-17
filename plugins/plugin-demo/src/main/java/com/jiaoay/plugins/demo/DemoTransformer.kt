@@ -8,7 +8,6 @@ import com.jiaoay.plugins.core.transform.Transformer
 import com.jiaoay.plugins.demo.config.DemoConfig
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.ClassNode
 
 class DemoTransformer : Transformer {

@@ -100,7 +100,7 @@ private fun AnnotationNode.checkSdkPatcherAnnotation(
     className: String, config: ExtensionsPluginConfig
 ) {
     if (desc == replaceAnnotationType.descriptor) {
-        val packageName = getValue<String>("name")
+        val packageName = getValue<String>("name")?.replace(":", "-")
 
         logger("package name: $packageName, className: $className")
         if (packageName != null && packageName.isNotEmpty()) {

@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 rootProject.name = "plugin-extensions-demo"
 include(":app")
 
-includeBuild("plugins") {
+includeBuild("plugin-extensions") {
     dependencySubstitution {
         substitute(module("com.jiaoay.plugins:core")).using(project(":core"))
         substitute(module("com.jiaoay.plugins:plugin-demo")).using(project(":plugin-demo"))

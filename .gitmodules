@@ -1,0 +1,3 @@
+[submodule "plugin-extensions"]
+	path = plugin-extensions
+	url = git@github.com:shijiayao-main/plugin-extensions.git

@@ -1,15 +1,15 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    id("com.android.application")
     id("com.jiaoay.plugins")
-    alias(libs.plugins.kotlinAndroid)
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.jiaoay.plugin_extensions"
+    namespace = "com.jiaoay.plugin_extensions_demo"
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.jiaoay.plugin_extensions"
+        applicationId = "com.jiaoay.plugin_extensions_demo"
         minSdk = 21
         targetSdk = 32
         versionCode = 1

@@ -5,7 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
-import com.jiaoay.plugin_extensions.databinding.ActivityMainBinding
+import com.jiaoay.plugin_extensions_demo.R
+import com.jiaoay.plugin_extensions_demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

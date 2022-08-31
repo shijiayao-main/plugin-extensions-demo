@@ -12,7 +12,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "plugin-extensions"
+rootProject.name = "plugin-extensions-demo"
 include(":app")
 
 includeBuild("plugins") {

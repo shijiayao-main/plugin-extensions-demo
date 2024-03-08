@@ -22,4 +22,3 @@ includeBuild("plugin-extensions") {
         substitute(module("com.jiaoay.plugins:core-extensions")).using(project(":core-extensions"))
     }
 }
-enableFeaturePreview("VERSION_CATALOGS")

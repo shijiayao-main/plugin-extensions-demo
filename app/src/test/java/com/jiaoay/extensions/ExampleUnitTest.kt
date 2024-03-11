@@ -1,4 +1,4 @@
-package com.jiaoay.plugin_extensions
+package com.jiaoay.extensions
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.jiaoay.plugin_extensions
+package com.jiaoay.extensions
 
 import android.net.Uri
 import android.os.Bundle
@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
         binding.image.setOnClickListener {
             if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
                 AppCompatDelegate.setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_YES
+                    AppCompatDelegate.MODE_NIGHT_YES,
                 )
             } else {
                 AppCompatDelegate.setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_NO
+                    AppCompatDelegate.MODE_NIGHT_NO,
                 )
             }
         }

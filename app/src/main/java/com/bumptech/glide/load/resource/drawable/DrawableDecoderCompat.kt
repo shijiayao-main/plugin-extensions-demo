@@ -19,20 +19,27 @@ object DrawableDecoderCompat {
 
     @JvmStatic
     fun getDrawable(
-        ourContext: Context, targetContext: Context, @DrawableRes id: Int
+        ourContext: Context,
+        targetContext: Context,
+        @DrawableRes id: Int,
     ): Drawable? {
-        return getDrawable(ourContext, targetContext, id,  /*theme=*/null)
+        return getDrawable(ourContext, targetContext, id, null)
     }
 
     @JvmStatic
     fun getDrawable(
-        ourContext: Context, @DrawableRes id: Int, theme: Theme?
+        ourContext: Context,
+        @DrawableRes id: Int,
+        theme: Theme?,
     ): Drawable? {
         return getDrawable(ourContext, ourContext, id, theme)
     }
 
     private fun getDrawable(
-        ourContext: Context, targetContext: Context, @DrawableRes id: Int, theme: Theme?
+        ourContext: Context,
+        targetContext: Context,
+        @DrawableRes id: Int,
+        theme: Theme?,
     ): Drawable? {
         try {
             // Race conditions may cause us to attempt to load using v7 more than once. That's ok since
@@ -55,7 +62,9 @@ object DrawableDecoderCompat {
     }
 
     private fun loadDrawableV7(
-        context: Context, @DrawableRes id: Int, theme: Theme?
+        context: Context,
+        @DrawableRes id: Int,
+        theme: Theme?,
     ): Drawable? {
         val resourceContext: Context = if (theme != null) {
             val contextThemeWrapper = ContextThemeWrapper(context, theme)

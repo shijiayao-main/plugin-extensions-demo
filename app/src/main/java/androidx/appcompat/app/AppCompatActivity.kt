@@ -48,7 +48,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.jiaoay.plugin_extensions.shortToast
+import com.jiaoay.extensions.shortToast
 import com.jiaoay.plugins.core.Replace
 
 /**
@@ -80,7 +80,10 @@ import com.jiaoay.plugins.core.Replace
 </div> *
  */
 @Replace(name = "appcompat:1.6.1")
-open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParentable,
+open class AppCompatActivity :
+    FragmentActivity,
+    AppCompatCallback,
+    SupportParentable,
     ActionBarDrawerToggle.DelegateProvider {
     private var mDelegate: AppCompatDelegate? = null
     private var mResources: Resources? = null
@@ -121,10 +124,9 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
     }
 
     private fun initDelegate() {
-
         // TODO: Directly connect AppCompatDelegate to SavedStateRegistry
         savedStateRegistry.registerSavedStateProvider(
-            DELEGATE_TAG
+            DELEGATE_TAG,
         ) {
             val outState = Bundle()
             delegate.onSaveInstanceState(outState)
@@ -135,7 +137,7 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
                 val delegate: AppCompatDelegate = delegate
                 delegate.installViewFactory()
                 delegate.onCreate(
-                    savedStateRegistry.consumeRestoredStateForKey(DELEGATE_TAG)
+                    savedStateRegistry.consumeRestoredStateForKey(DELEGATE_TAG),
                 )
             }
         })
@@ -262,7 +264,9 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
         val ab = supportActionBar
         return if (item.itemId == R.id.home && ab != null && ab.displayOptions and ActionBar.DISPLAY_HOME_AS_UP != 0) {
             onSupportNavigateUp()
-        } else false
+        } else {
+            false
+        }
     }
 
     override fun onDestroy() {
@@ -566,11 +570,13 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
         val keyCode = event.keyCode
         val actionBar = supportActionBar
         return if (keyCode == KeyEvent.KEYCODE_MENU && actionBar != null && actionBar.onMenuKeyEvent(
-                event
+                event,
             )
         ) {
             true
-        } else super.dispatchKeyEvent(event)
+        } else {
+            super.dispatchKeyEvent(event)
+        }
     }
 
     override fun getResources(): Resources {
@@ -586,9 +592,11 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
      * and perform the corresponding action.
      */
     private fun performMenuItemShortcut(event: KeyEvent): Boolean {
-        if ((Build.VERSION.SDK_INT < 26 && !event.isCtrlPressed
-                    && !KeyEvent.metaStateHasNoModifiers(event.metaState) && event.repeatCount == 0) && !KeyEvent.isModifierKey(
-                event.keyCode
+        if ((
+                Build.VERSION.SDK_INT < 26 && !event.isCtrlPressed &&
+                    !KeyEvent.metaStateHasNoModifiers(event.metaState) && event.repeatCount == 0
+                ) && !KeyEvent.isModifierKey(
+                event.keyCode,
             )
         ) {
             val currentWindow = window
@@ -605,13 +613,15 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         return if (performMenuItemShortcut(event)) {
             true
-        } else super.onKeyDown(keyCode, event)
+        } else {
+            super.onKeyDown(keyCode, event)
+        }
     }
 
     override fun openOptionsMenu() {
         val actionBar = supportActionBar
-        if (window.hasFeature(Window.FEATURE_OPTIONS_PANEL)
-            && (actionBar == null || !actionBar.openOptionsMenu())
+        if (window.hasFeature(Window.FEATURE_OPTIONS_PANEL) &&
+            (actionBar == null || !actionBar.openOptionsMenu())
         ) {
             super.openOptionsMenu()
         }
@@ -619,8 +629,8 @@ open class AppCompatActivity : FragmentActivity, AppCompatCallback, SupportParen
 
     override fun closeOptionsMenu() {
         val actionBar = supportActionBar
-        if (window.hasFeature(Window.FEATURE_OPTIONS_PANEL)
-            && (actionBar == null || !actionBar.closeOptionsMenu())
+        if (window.hasFeature(Window.FEATURE_OPTIONS_PANEL) &&
+            (actionBar == null || !actionBar.closeOptionsMenu())
         ) {
             super.closeOptionsMenu()
         }

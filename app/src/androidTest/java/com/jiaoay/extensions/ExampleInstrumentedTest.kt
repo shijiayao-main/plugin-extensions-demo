@@ -1,4 +1,4 @@
-package com.jiaoay.plugin_extensions
+package com.jiaoay.extensions
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

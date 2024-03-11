@@ -1,4 +1,4 @@
-package com.jiaoay.plugin_extensions
+package com.jiaoay.extensions
 
 import android.content.Context
 import android.os.Looper

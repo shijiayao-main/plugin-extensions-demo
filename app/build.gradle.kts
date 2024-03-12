@@ -47,6 +47,10 @@ pluginDemo {
     tag = "这是一个Demo"
 }
 
+pluginTrace {
+    isEnable = true
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")

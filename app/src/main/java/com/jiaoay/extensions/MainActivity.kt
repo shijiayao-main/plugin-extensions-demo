@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.jiaoay.plugin_extensions_demo.R
 import com.jiaoay.plugin_extensions_demo.databinding.ActivityMainBinding
+import com.jiaoay.plugins.trace.Trace
 
+@Trace
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {

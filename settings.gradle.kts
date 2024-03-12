@@ -20,5 +20,6 @@ includeBuild("plugin-extensions") {
         substitute(module("com.jiaoay.plugins:core")).using(project(":core"))
         substitute(module("com.jiaoay.plugins:plugin-demo")).using(project(":plugin-demo"))
         substitute(module("com.jiaoay.plugins:core-extensions")).using(project(":core-extensions"))
+        substitute(module("com.jiaoay.plugins:plugin-trace")).using(project(":plugin-trace"))
     }
 }

@@ -6,6 +6,7 @@ buildscript {
         classpath(kotlin("gradle-plugin", version = "1.9.22"))
         classpath("com.jiaoay.plugins:core")
         classpath("com.jiaoay.plugins:plugin-demo")
+        classpath("com.jiaoay.plugins:plugin-trace")
     }
 }
 

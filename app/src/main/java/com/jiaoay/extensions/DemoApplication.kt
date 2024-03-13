@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.jiaoay.plugins.core.PluginExtensions
 
-class DemoApplication: Application() {
+class DemoApplication : Application() {
 
     companion object {
         private const val TAG = "DemoApplication"

@@ -49,7 +49,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jiaoay.extensions.shortToast
-import com.jiaoay.plugins.core.Replace
+import com.jiaoay.plugins.core.SdkPatcher
 
 /**
  * Base class for activities that wish to use some of the newer platform features on older
@@ -79,7 +79,7 @@ import com.jiaoay.plugins.core.Replace
  * Bar]({@docRoot}guide/topics/ui/actionbar.html) API guide.
 </div> *
  */
-@Replace(name = "appcompat:1.6.1")
+@SdkPatcher(name = "appcompat:1.6.1")
 open class AppCompatActivity :
     FragmentActivity,
     AppCompatCallback,

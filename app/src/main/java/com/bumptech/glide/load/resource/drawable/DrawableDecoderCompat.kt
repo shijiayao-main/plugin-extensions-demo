@@ -9,9 +9,9 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import com.jiaoay.plugins.core.Replace
+import com.jiaoay.plugins.core.SdkPatcher
 
-@Replace(name = "glide-4.13.2")
+@SdkPatcher(name = "glide-4.13.2")
 object DrawableDecoderCompat {
 
     @Volatile

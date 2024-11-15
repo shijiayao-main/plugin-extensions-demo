@@ -3,7 +3,7 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.9.22"))
+        classpath(kotlin("gradle-plugin", version = "2.0.21"))
         classpath("com.jiaoay.plugins:core")
         classpath("com.jiaoay.plugins:plugin-demo")
         classpath("com.jiaoay.plugins:plugin-trace")
@@ -13,9 +13,9 @@ buildscript {
 plugins {
     id("com.diffplug.spotless") version "6.25.0" apply false
 
-    id("com.android.application") version "8.3.0" apply false
-    id("com.android.library") version "8.3.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.22" apply false
+    id("com.android.application") version "8.7.2" apply false
+    id("com.android.library") version "8.7.2" apply false
+    id("org.jetbrains.kotlin.android") version "2.0.21" apply false
 }
 
 subprojects {

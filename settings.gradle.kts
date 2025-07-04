@@ -5,7 +5,14 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
+    versionCatalogs {
+        create("pluginLibs") {
+            from(files("${rootDir}/plugin-extensions/gradle/plugin.libs.versions.toml"))
+        }
+    }
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()

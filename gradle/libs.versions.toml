@@ -1,5 +1,5 @@
 [versions]
-gradlePluginVersion = "8.11.0"
+gradlePluginVersion = "8.13.0"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "gradlePluginVersion" }

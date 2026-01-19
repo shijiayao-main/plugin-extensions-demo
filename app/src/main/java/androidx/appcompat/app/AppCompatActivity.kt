@@ -26,6 +26,7 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -141,6 +142,15 @@ open class AppCompatActivity :
                 )
             }
         })
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        when(event?.actionMasked) {
+            MotionEvent.ACTION_UP -> {
+                shortToast("x: ${event.x}, y: ${event.y}")
+            }
+        }
+        return super.onTouchEvent(event)
     }
 
     override fun attachBaseContext(newBase: Context) {

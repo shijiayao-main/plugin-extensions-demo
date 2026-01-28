@@ -15,7 +15,6 @@ plugins {
 
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
-    alias(pluginLibs.plugins.kotlinAndroid) apply false
 }
 
 subprojects {

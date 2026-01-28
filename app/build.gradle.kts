@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("com.jiaoay.plugins")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -32,10 +31,10 @@ android {
         enable = true
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_22
-        targetCompatibility = JavaVersion.VERSION_22
-    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_22
+//        targetCompatibility = JavaVersion.VERSION_22
+//    }
 }
 
 extensionsPlugin {
@@ -49,6 +48,7 @@ pluginDemo {
 
 pluginTrace {
     isEnable = true
+    traceClassSet = mutableSetOf("MainActivity")
 }
 
 dependencies {

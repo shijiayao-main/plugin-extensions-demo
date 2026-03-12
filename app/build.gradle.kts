@@ -48,7 +48,10 @@ pluginDemo {
 
 pluginTrace {
     isEnable = true
-    traceClassSet = mutableSetOf("MainActivity")
+    traceWhiteSet = mutableSetOf(
+        "AppCompatActivity",
+        "MainActivity"
+    )
 }
 
 dependencies {

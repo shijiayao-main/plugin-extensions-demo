@@ -145,7 +145,7 @@ open class AppCompatActivity :
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        when(event?.actionMasked) {
+        when (event?.actionMasked) {
             MotionEvent.ACTION_UP -> {
                 shortToast("x: ${event.x}, y: ${event.y}")
             }

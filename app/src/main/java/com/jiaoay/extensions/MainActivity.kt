@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.image.setOnClickListener {
             if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
+                Thread.sleep(50)
                 AppCompatDelegate.setDefaultNightMode(
                     AppCompatDelegate.MODE_NIGHT_YES,
                 )
